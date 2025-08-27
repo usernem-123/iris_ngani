@@ -1,4 +1,3 @@
-# 
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -13,6 +12,25 @@ import numpy as np
 df = pd.read_csv('iris.csv')  # replace with your CSV path
 print("First 5 rows of dataset:")
 print(df.head())
+
+# ---------------------------
+# Check for missing values before imputation
+# ---------------------------
+print("\nMissing values per column BEFORE imputation:")
+print(df.isnull().sum())
+
+# ---------------------------
+# Handle Missing Values (Imputation)
+# ---------------------------
+# Fill missing numeric columns with column mean
+numeric_cols = df.columns[:-1]  # exclude 'species'
+df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
+
+# ---------------------------
+# Check for missing values after imputation
+# ---------------------------
+print("\nMissing values per column AFTER imputation:")
+print(df.isnull().sum())
 
 # ---------------------------
 # Step 2: Prepare Features & Labels
@@ -37,7 +55,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 model = SVC(kernel='linear')
 model.fit(X_train, y_train)
 
-# ---------------------------
+# ---------------------------   
 # Step 5: Test & Accuracy
 # ---------------------------
 y_pred = model.predict(X_test)
